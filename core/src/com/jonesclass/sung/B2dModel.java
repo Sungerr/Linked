@@ -9,28 +9,31 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 
 public class B2dModel {
 
     public World world;
+    private MouseJoint mouseJoint = null;
 
     public B2dModel () {
         world = new World(new Vector2(0,-10f), true);
+        world.setContactListener(new B2dContactListener(this));
         createFloor();
-        createObject();
-        createMovingObject();
+//        createObject();
+//        createMovingObject();
 
         // get our body factory singleton and store it in bodyFactory
         BodyFactory bodyFactory = BodyFactory.getInstance(world);
 
-        // add a new rubber ball at position 1, 1
-        bodyFactory.makeCirclePolyBody(1, 1, 2, BodyFactory.RUBBER, BodyType.DynamicBody,false);
-
-        // add a new steel ball at position 4, 1
-        bodyFactory.makeCirclePolyBody(4, 1, 2, BodyFactory.STEEL, BodyType.DynamicBody,false);
+//        // add a new rubber ball at position 1, 1
+//        bodyFactory.makeCirclePolyBody(1, 1, 2, BodyFactory.RUBBER, BodyType.DynamicBody,false);
+//
+//        // add a new steel ball at position 4, 1
+//        bodyFactory.makeCirclePolyBody(4, 1, 2, BodyFactory.STEEL, BodyType.DynamicBody,false);
 
         // add a new stone at position -4,1
-        bodyFactory.makeCirclePolyBody(-4, 1, 2, BodyFactory.STONE, BodyType.DynamicBody,false);
+        bodyFactory.makeCirclePolyBody(1, 1, 2, BodyFactory.STONE, BodyType.DynamicBody,false);
     }
 
     public void logicStep(float delta) {
