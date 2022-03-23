@@ -5,9 +5,13 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.QueryCallback;
+import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 
 public class GameScreen extends InputAdapter implements Screen  {
@@ -17,6 +21,7 @@ public class GameScreen extends InputAdapter implements Screen  {
     OrthographicCamera cam;
     Box2DDebugRenderer debugRenderer;
     private MouseJointDef mouseJointDef;
+    private MouseJoint mouseJoint;
 
     public GameScreen(final Main game) {
         this.game = game;
@@ -27,6 +32,7 @@ public class GameScreen extends InputAdapter implements Screen  {
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(this);
         mouseJointDef = new MouseJointDef();
         mouseJointDef.bodyA = model.world.createBody(new BodyDef());
         mouseJointDef.collideConnected = true;
@@ -66,21 +72,50 @@ public class GameScreen extends InputAdapter implements Screen  {
 
     }
 
+
     private Vector3 tmp = new Vector3();
+    private Vector2 tmp2 = new Vector2();
+
+    private QueryCallback queryCallback = new QueryCallback() {
+
+        @Override
+        public boolean reportFixture(Fixture fixture) {
+            if (!fixture.testPoint(tmp.x, tmp.y)) {
+                return false;
+            }
+            mouseJointDef.bodyB = fixture.getBody();
+            mouseJointDef.target.set(tmp.x, tmp.y);
+            mouseJoint = (MouseJoint) model.world.createJoint(mouseJointDef);
+
+            return false;
+        }
+    };
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         cam.unproject(tmp.set(screenX, screenY, 0));
+        model.world.QueryAABB(queryCallback, tmp.x, tmp.y, tmp.x, tmp.y);
         return true;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        if (mouseJoint == null)
+            return false;
+
+        model.world.destroyJoint(mouseJoint);
+        mouseJoint = null;
         return true;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
+        if (mouseJoint == null)
+            return false;
+
+        cam.unproject(tmp.set(screenX, screenY, 0));
+        mouseJoint.setTarget(tmp2.set(tmp.x, tmp.y));
+        mouseJoint.setDampingRatio(0);
         return true;
     }
 }
