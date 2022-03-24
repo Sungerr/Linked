@@ -36,7 +36,9 @@ public class GameScreen extends InputAdapter implements Screen  {
         mouseJointDef = new MouseJointDef();
         mouseJointDef.bodyA = model.world.createBody(new BodyDef());
         mouseJointDef.collideConnected = true;
-        mouseJointDef.maxForce = 500;
+
+        //change this to edit speed
+        mouseJointDef.maxForce = 10000;
     }
 
     @Override
@@ -100,11 +102,20 @@ public class GameScreen extends InputAdapter implements Screen  {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+
+
+
         if (mouseJoint == null)
             return false;
 
+        cam.unproject(tmp.set(screenX, screenY, 0));
+        mouseJoint.setTarget(tmp2.set(tmp.x, tmp.y));
+        mouseJoint.setDampingRatio(20f);
+        mouseJoint.setFrequency(100f);
+
         model.world.destroyJoint(mouseJoint);
         mouseJoint = null;
+
         return true;
     }
 
@@ -113,9 +124,7 @@ public class GameScreen extends InputAdapter implements Screen  {
         if (mouseJoint == null)
             return false;
 
-        cam.unproject(tmp.set(screenX, screenY, 0));
-        mouseJoint.setTarget(tmp2.set(tmp.x, tmp.y));
-        mouseJoint.setDampingRatio(0);
+
         return true;
     }
 }

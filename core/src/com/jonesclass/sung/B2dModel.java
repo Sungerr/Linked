@@ -17,7 +17,7 @@ public class B2dModel {
     private MouseJoint mouseJoint = null;
 
     public B2dModel () {
-        world = new World(new Vector2(0,0f), true);
+        world = new World(new Vector2(0,-20f), true);
         world.setContactListener(new B2dContactListener(this));
         createFloor();
 //        createObject();
