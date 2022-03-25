@@ -49,7 +49,7 @@ public class BodyFactory {
             case 2:
                 fixtureDef.density = 1f;
                 fixtureDef.friction = 0f;
-                fixtureDef.restitution = 1f;
+                fixtureDef.restitution = 0.01f;
                 break;
             case 3:
                 fixtureDef.density = 1f;

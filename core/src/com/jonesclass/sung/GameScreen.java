@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.QueryCallback;
+import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 
@@ -22,6 +23,7 @@ public class GameScreen extends InputAdapter implements Screen  {
     Box2DDebugRenderer debugRenderer;
     private MouseJointDef mouseJointDef;
     private MouseJoint mouseJoint;
+    private DistanceJointDef distanceJointDef;
 
     public GameScreen(final Main game) {
         this.game = game;
@@ -37,8 +39,15 @@ public class GameScreen extends InputAdapter implements Screen  {
         mouseJointDef.bodyA = model.world.createBody(new BodyDef());
         mouseJointDef.collideConnected = true;
 
+        distanceJointDef = new DistanceJointDef();
+        distanceJointDef.bodyA = model.circle1;
+        distanceJointDef.bodyB = model.circle2;
+        distanceJointDef.length = 5;
+
+        model.world.createJoint(distanceJointDef);
+
         //change this to edit speed
-        mouseJointDef.maxForce = 10000;
+        mouseJointDef.maxForce = 1000;
     }
 
     @Override
@@ -47,6 +56,8 @@ public class GameScreen extends InputAdapter implements Screen  {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         debugRenderer.render(model.world, cam.combined);
+
+
     }
 
     @Override
@@ -103,18 +114,13 @@ public class GameScreen extends InputAdapter implements Screen  {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
-
-
         if (mouseJoint == null)
             return false;
 
-        cam.unproject(tmp.set(screenX, screenY, 0));
-        mouseJoint.setTarget(tmp2.set(tmp.x, tmp.y));
-        mouseJoint.setDampingRatio(20f);
-        mouseJoint.setFrequency(100f);
 
         model.world.destroyJoint(mouseJoint);
         mouseJoint = null;
+
 
         return true;
     }
@@ -124,6 +130,10 @@ public class GameScreen extends InputAdapter implements Screen  {
         if (mouseJoint == null)
             return false;
 
+        cam.unproject(tmp.set(screenX, screenY, 0));
+        mouseJoint.setTarget(tmp2.set(tmp.x, tmp.y));
+        mouseJoint.setDampingRatio(100f);
+        mouseJoint.setFrequency(50f);
 
         return true;
     }
