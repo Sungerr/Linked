@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.QueryCallback;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 
 public class GameScreen extends InputAdapter implements Screen  {
 
@@ -23,7 +24,7 @@ public class GameScreen extends InputAdapter implements Screen  {
     Box2DDebugRenderer debugRenderer;
     private MouseJointDef mouseJointDef;
     private MouseJoint mouseJoint;
-    private DistanceJointDef distanceJointDef;
+    private RevoluteJointDef revoluteJointDef;
 
     public GameScreen(final Main game) {
         this.game = game;
@@ -39,12 +40,13 @@ public class GameScreen extends InputAdapter implements Screen  {
         mouseJointDef.bodyA = model.world.createBody(new BodyDef());
         mouseJointDef.collideConnected = true;
 
-        distanceJointDef = new DistanceJointDef();
-        distanceJointDef.bodyA = model.circle1;
-        distanceJointDef.bodyB = model.circle2;
-        distanceJointDef.length = 5;
+        revoluteJointDef = new RevoluteJointDef();
+        revoluteJointDef.bodyA = model.circle1;
+        revoluteJointDef.bodyB = model.circle2;
 
-        model.world.createJoint(distanceJointDef);
+
+
+        model.world.createJoint(revoluteJointDef);
 
         //change this to edit speed
         mouseJointDef.maxForce = 1000;
@@ -57,6 +59,7 @@ public class GameScreen extends InputAdapter implements Screen  {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         debugRenderer.render(model.world, cam.combined);
 
+        model.circle2.applyAngularImpulse(10,true);
 
     }
 
@@ -94,6 +97,8 @@ public class GameScreen extends InputAdapter implements Screen  {
         @Override
         public boolean reportFixture(Fixture fixture) {
             if (!fixture.testPoint(tmp.x, tmp.y)) {
+                return false;
+            } else if (!fixture.testPoint(model.circle2.getPosition())) {
                 return false;
             }
             mouseJointDef.bodyB = fixture.getBody();

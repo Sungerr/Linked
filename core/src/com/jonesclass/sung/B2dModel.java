@@ -30,7 +30,7 @@ public class B2dModel {
         BodyFactory bodyFactory = BodyFactory.getInstance(world);
 
         // add a new rubber ball at position 1, 1
-        circle2 = bodyFactory.makeCirclePolyBody(2, 1, 2, BodyFactory.RUBBER, BodyType.DynamicBody,false);
+        circle2 = bodyFactory.makeCirclePolyBody(2, 1, 5, BodyFactory.RUBBER, BodyType.DynamicBody,false);
 //
 
 
@@ -43,6 +43,7 @@ public class B2dModel {
     }
 
     public void logicStep(float delta) {
+
         world.step(delta, 3, 3);
     }
 
