@@ -24,7 +24,7 @@ public class GameScreen extends InputAdapter implements Screen  {
     Box2DDebugRenderer debugRenderer;
     private MouseJointDef mouseJointDef;
     private MouseJoint mouseJoint;
-    private RevoluteJointDef revoluteJointDef;
+    private DistanceJointDef distanceJointDef;
 
     public GameScreen(final Main game) {
         this.game = game;
@@ -40,13 +40,14 @@ public class GameScreen extends InputAdapter implements Screen  {
         mouseJointDef.bodyA = model.world.createBody(new BodyDef());
         mouseJointDef.collideConnected = true;
 
-        revoluteJointDef = new RevoluteJointDef();
-        revoluteJointDef.bodyA = model.circle1;
-        revoluteJointDef.bodyB = model.circle2;
+        distanceJointDef = new DistanceJointDef();
+        distanceJointDef.bodyA = model.circle1;
+        distanceJointDef.bodyB = model.connectBody;
+        distanceJointDef.length = 5f;
 
 
 
-        model.world.createJoint(revoluteJointDef);
+        model.world.createJoint(distanceJointDef);
 
         //change this to edit speed
         mouseJointDef.maxForce = 1000;

@@ -18,28 +18,50 @@ public class B2dModel {
     private MouseJoint mouseJoint = null;
     public Body circle1;
     public Body circle2;
+    public Body connectBody;
+
 
     public B2dModel () {
         world = new World(new Vector2(0,0), true);
         world.setContactListener(new B2dContactListener(this));
         createFloor();
-//        createObject();
-//        createMovingObject();
 
-        // get our body factory singleton and store it in bodyFactory
+
+        // get our body factor and store it in bodyFactory
         BodyFactory bodyFactory = BodyFactory.getInstance(world);
 
         // add a new rubber ball at position 1, 1
         circle2 = bodyFactory.makeCirclePolyBody(2, 1, 5, BodyFactory.RUBBER, BodyType.DynamicBody,false);
-//
 
-
-
-//        // add a new steel ball at position 4, 1
-//        bodyFactory.makeCirclePolyBody(4, 1, 2, BodyFactory.STEEL, BodyType.DynamicBody,false);
-
-        // add a new stone at position -4,1
         circle1 = bodyFactory.makeCirclePolyBody(1, 1, 2, BodyFactory.STONE, BodyType.DynamicBody,false);
+
+
+
+
+        PolygonShape connector = new PolygonShape();
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.density = 1f;
+        fixtureDef.friction = 0.3f;
+        fixtureDef.restitution = 0.1f;
+
+
+        connector.setAsBox(2,0.1f, new Vector2(-3,0), 0);
+
+
+        fixtureDef.shape = connector;
+
+        BodyDef boxBodyDef = new BodyDef();
+        boxBodyDef.type = BodyType.DynamicBody;
+        boxBodyDef.fixedRotation = false;
+        boxBodyDef.position.set(new Vector2(-3, 0));
+
+        connectBody = world.createBody(boxBodyDef);
+        connectBody.createFixture(fixtureDef);
+//        connectBody.createFixture(circle1.getFixtureList().first().getShape(),1);
+
+
+
+//        circle1.createFixture(fixtureDef);
     }
 
     public void logicStep(float delta) {
@@ -47,23 +69,7 @@ public class B2dModel {
         world.step(delta, 3, 3);
     }
 
-    private void createObject() {
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(0,0);
 
-        Body bodyd = world.createBody(bodyDef);
-
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(1,1);
-
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = shape;
-        fixtureDef.density = 1f;
-
-        bodyd.createFixture(shape, 0.0f);
-        shape.dispose();
-    }
 
     private void createFloor() {
         BodyDef bodyDef = new BodyDef();
