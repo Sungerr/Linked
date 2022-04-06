@@ -31,37 +31,10 @@ public class B2dModel {
         BodyFactory bodyFactory = BodyFactory.getInstance(world);
 
         // add a new rubber ball at position 1, 1
-        circle2 = bodyFactory.makeCirclePolyBody(2, 1, 5, BodyFactory.RUBBER, BodyType.DynamicBody,false);
+        circle2 = bodyFactory.makeCirclePolyBody(2, 1, 2, BodyFactory.RUBBER, BodyType.DynamicBody,false);
 
-        circle1 = bodyFactory.makeCirclePolyBody(1, 1, 2, BodyFactory.STONE, BodyType.DynamicBody,false);
+        circle1 = bodyFactory.makeCirclePolyBody(5, 1, 5, BodyFactory.STONE, BodyType.DynamicBody,false);
 
-
-
-
-        PolygonShape connector = new PolygonShape();
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.density = 1f;
-        fixtureDef.friction = 0.3f;
-        fixtureDef.restitution = 0.1f;
-
-
-        connector.setAsBox(2,0.1f, new Vector2(-3,0), 0);
-
-
-        fixtureDef.shape = connector;
-
-        BodyDef boxBodyDef = new BodyDef();
-        boxBodyDef.type = BodyType.DynamicBody;
-        boxBodyDef.fixedRotation = false;
-        boxBodyDef.position.set(new Vector2(-3, 0));
-
-        connectBody = world.createBody(boxBodyDef);
-        connectBody.createFixture(fixtureDef);
-//        connectBody.createFixture(circle1.getFixtureList().first().getShape(),1);
-
-
-
-//        circle1.createFixture(fixtureDef);
     }
 
     public void logicStep(float delta) {
