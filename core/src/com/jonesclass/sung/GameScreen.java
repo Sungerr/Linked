@@ -49,8 +49,8 @@ public class GameScreen extends InputAdapter implements Screen  {
         revoluteJointDef.localAnchorA.set(new Vector2(5, 0));
         revoluteJointDef.localAnchorB.set(new Vector2(0, 0));
         revoluteJointDef.enableMotor = true;
-        revoluteJointDef.motorSpeed = 200000f;
-        revoluteJointDef.maxMotorTorque = 360;
+        revoluteJointDef.motorSpeed = 50f;
+        revoluteJointDef.maxMotorTorque = 50;
         revoluteJointDef.referenceAngle = 0;
 
 
@@ -70,8 +70,6 @@ public class GameScreen extends InputAdapter implements Screen  {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         debugRenderer.render(model.world, cam.combined);
-
-        model.circle2.applyAngularImpulse(10,true);
 
     }
 
@@ -149,8 +147,8 @@ public class GameScreen extends InputAdapter implements Screen  {
 
         cam.unproject(tmp.set(screenX, screenY, 0));
         mouseJoint.setTarget(tmp2.set(tmp.x, tmp.y));
-        mouseJoint.setDampingRatio(100f);
-        mouseJoint.setFrequency(50f);
+        mouseJoint.setDampingRatio(10f);
+        mouseJoint.setFrequency(20f);
 
         return true;
     }

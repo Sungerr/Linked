@@ -38,7 +38,7 @@ public class BodyFactory {
 
         switch(material){
             case 0:
-                fixtureDef.density = 1f;
+                fixtureDef.density = 0.5f;
                 fixtureDef.friction = 0.3f;
                 fixtureDef.restitution = 0.1f;
                 break;
@@ -48,16 +48,16 @@ public class BodyFactory {
                 fixtureDef.restitution = 0.3f;
                 break;
             case 2:
-                fixtureDef.density = 0f;
+                fixtureDef.density = 0.5f;
                 fixtureDef.friction = 0f;
                 fixtureDef.restitution = 0.01f;
                 break;
             case 3:
-                fixtureDef.density = 0f;
+                fixtureDef.density = 5f;
                 fixtureDef.friction = 0.9f;
                 fixtureDef.restitution = 0.01f;
             default:
-                fixtureDef.density = 7f;
+                fixtureDef.density = 0.5f;
                 fixtureDef.friction = 0.5f;
                 fixtureDef.restitution = 0.3f;
         }

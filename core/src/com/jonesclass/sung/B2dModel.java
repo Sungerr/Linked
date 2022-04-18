@@ -31,8 +31,11 @@ public class B2dModel {
         BodyFactory bodyFactory = BodyFactory.getInstance(world);
 
         // add a new rubber ball at position 1, 1
+        //small
         circle2 = bodyFactory.makeCirclePolyBody(2, 1, 2, BodyFactory.RUBBER, BodyType.DynamicBody,false);
 
+
+        //Big circle
         circle1 = bodyFactory.makeCirclePolyBody(5, 1, 5, BodyFactory.STONE, BodyType.DynamicBody,false);
 
     }
