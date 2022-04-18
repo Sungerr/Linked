@@ -13,12 +13,8 @@ public class BodyFactory {
     private static BodyFactory thisInstance;
     private World world;
 
-    public static final int STEEL = 0;
-    public static final int WOOD = 1;
-    public static final int RUBBER = 2;
-    public static final int STONE = 3;
-    public static final int OTHER = 4;
-    public static final int ICE = 5;
+    public static final int PLANET = 0;
+    public static final int SATELLITE = 1;
 
     private BodyFactory(World world){
         this.world = world;
@@ -38,7 +34,7 @@ public class BodyFactory {
 
         switch(material){
             case 0:
-                fixtureDef.density = 0.5f;
+                fixtureDef.density = 3f;
                 fixtureDef.friction = 0.3f;
                 fixtureDef.restitution = 0.1f;
                 break;
@@ -47,15 +43,6 @@ public class BodyFactory {
                 fixtureDef.friction = 0.7f;
                 fixtureDef.restitution = 0.3f;
                 break;
-            case 2:
-                fixtureDef.density = 0.5f;
-                fixtureDef.friction = 0f;
-                fixtureDef.restitution = 0.01f;
-                break;
-            case 3:
-                fixtureDef.density = 5f;
-                fixtureDef.friction = 0.9f;
-                fixtureDef.restitution = 0.01f;
             default:
                 fixtureDef.density = 0.5f;
                 fixtureDef.friction = 0.5f;

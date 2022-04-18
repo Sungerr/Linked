@@ -53,11 +53,6 @@ public class GameScreen extends InputAdapter implements Screen  {
         revoluteJointDef.maxMotorTorque = 50;
         revoluteJointDef.referenceAngle = 0;
 
-
-
-
-
-
         model.world.createJoint(revoluteJointDef);
 
         //change this to edit speed

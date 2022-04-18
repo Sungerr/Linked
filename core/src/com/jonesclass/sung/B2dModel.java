@@ -32,16 +32,15 @@ public class B2dModel {
 
         // add a new rubber ball at position 1, 1
         //small
-        circle2 = bodyFactory.makeCirclePolyBody(2, 1, 2, BodyFactory.RUBBER, BodyType.DynamicBody,false);
+        circle2 = bodyFactory.makeCirclePolyBody(2, 1, 2, BodyFactory.SATELLITE, BodyType.DynamicBody,true);
 
 
         //Big circle
-        circle1 = bodyFactory.makeCirclePolyBody(5, 1, 5, BodyFactory.STONE, BodyType.DynamicBody,false);
+        circle1 = bodyFactory.makeCirclePolyBody(5, 1, 5, BodyFactory.PLANET, BodyType.DynamicBody,false);
 
     }
 
     public void logicStep(float delta) {
-
         world.step(delta, 3, 3);
     }
 
