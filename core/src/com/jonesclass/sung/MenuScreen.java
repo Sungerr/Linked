@@ -4,9 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.jonesclass.sung.Utilities;
@@ -21,6 +23,7 @@ public class MenuScreen implements Screen {
     private Table table;
     private BitmapFont font;
     private TextButton startButton;
+    private Label titleLabel;
 
     public MenuScreen(final Main game) {
         this.game = game;
@@ -29,12 +32,15 @@ public class MenuScreen implements Screen {
 
         stage = new Stage();
         table = new Table();
-        font = new BitmapFont(Gdx.files.internal("default.fnt"));
 
         try {
+            titleLabel = new Label("Linked", Utilities.labelStyle());
+            titleLabel.setFontScale(10f);
             startButton = new TextButton("Start", Utilities.buttonStyles("default-rect", "default-rect-down"));
             startButton = Utilities.buttonSettings(startButton);
             table.center().setFillParent(true);
+            table.add(titleLabel);
+            table.row();
             table.add(startButton).center().width(300).height(80);
             stage.addActor(table);
         } catch (Exception e) {
@@ -51,7 +57,8 @@ public class MenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
-
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         cam.update();
         stage.act(delta);
         stage.draw();

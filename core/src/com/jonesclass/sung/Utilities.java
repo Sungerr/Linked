@@ -4,27 +4,31 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.utils.Align;
 
+import sun.font.TrueTypeFont;
+
 public class Utilities {
 
     private static TextButtonStyle textButtonStyle;
     private static TextButton textButton;
-    private static BitmapFont font;
     private static Skin buttonSkin;
     private static TextureAtlas textureAtlasTest;
 
+
     public static TextButton buttonSettings(TextButton button) {
         button.getLabel().setAlignment(Align.center);
-        button.getLabel().setFontScale(3f,3f);
+        button.getLabel().setFontScale(3f);
         return button;
     }
 
     public static TextButtonStyle buttonStyles(String upStyle, String overStyle) {
-        font = new BitmapFont();
+        BitmapFont font = new BitmapFont();
         buttonSkin = new Skin(Gdx.files.internal("uiskin.json"));
         textureAtlasTest = new TextureAtlas("uiskin.atlas");
         buttonSkin.addRegions(textureAtlasTest);
@@ -37,5 +41,15 @@ public class Utilities {
         textButtonStyle.pressedOffsetX = 1;
         textButtonStyle.pressedOffsetY = -1;
         return textButtonStyle;
+    }
+
+    public static Label.LabelStyle labelStyle() {
+        BitmapFont font = new BitmapFont();
+
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = font;
+        labelStyle.fontColor = Color.WHITE;
+
+        return labelStyle;
     }
 }
