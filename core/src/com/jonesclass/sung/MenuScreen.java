@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -22,7 +24,7 @@ public class MenuScreen implements Screen {
     private Stage stage;
     private Table table;
     private BitmapFont font;
-    private TextButton startButton;
+    private TextButton startButton, scoresButton, exitButton;
     private Label titleLabel;
 
     public MenuScreen(final Main game) {
@@ -35,13 +37,26 @@ public class MenuScreen implements Screen {
 
         try {
             titleLabel = new Label("Linked", Utilities.labelStyle());
-            titleLabel.setFontScale(10f);
-            startButton = new TextButton("Start", Utilities.buttonStyles("default-rect", "default-rect-down"));
+            titleLabel.setFontScale(12f);
+
+            startButton = new TextButton("Start", Utilities.buttonStyles());
+            scoresButton = new TextButton("High Scores", Utilities.buttonStyles());
+            exitButton = new TextButton("Exit", Utilities.buttonStyles());
+
             startButton = Utilities.buttonSettings(startButton);
-            table.center().setFillParent(true);
-            table.add(titleLabel);
+            scoresButton = Utilities.buttonSettings(scoresButton);
+            exitButton = Utilities.buttonSettings(exitButton);
+
+
+            table.center().top().setFillParent(true);
+            table.add(titleLabel).padBottom(110).padTop(20);
             table.row();
-            table.add(startButton).center().width(300).height(80);
+            table.add(startButton).padBottom(90).width(550).height(130);
+            table.row();
+            table.add(scoresButton).padBottom(90).width(550).height(130);
+            table.row();
+            table.add(exitButton).width(550).height(130);
+
             stage.addActor(table);
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,6 +80,10 @@ public class MenuScreen implements Screen {
 
         if (startButton.isPressed()) {
             game.setScreen(new GameScreen(game));
+        }
+
+        if (exitButton.isPressed()) {
+            Gdx.app.exit();
         }
     }
 

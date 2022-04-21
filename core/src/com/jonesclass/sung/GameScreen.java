@@ -1,6 +1,7 @@
 package com.jonesclass.sung;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -15,6 +16,8 @@ import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+
+import java.awt.event.KeyEvent;
 
 public class GameScreen extends InputAdapter implements Screen  {
 
@@ -65,6 +68,10 @@ public class GameScreen extends InputAdapter implements Screen  {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         debugRenderer.render(model.world, cam.combined);
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
+            game.setScreen(new MenuScreen(game));
+        }
 
     }
 
@@ -147,4 +154,6 @@ public class GameScreen extends InputAdapter implements Screen  {
 
         return true;
     }
+
+
 }
