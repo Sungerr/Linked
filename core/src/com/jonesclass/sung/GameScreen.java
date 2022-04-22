@@ -16,13 +16,15 @@ import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 
 import java.awt.event.KeyEvent;
 
 public class GameScreen extends InputAdapter implements Screen  {
 
 
-    //TODO: touchpad, screen loop, enemies, obstacles, projectiles, highscore, menu, weapon speed slider
+    //TODO: touchpad, screen loop, enemies, obstacles, highscore, menu, weapon speed slider
 
     final Main game;
     B2dModel model;
@@ -31,6 +33,8 @@ public class GameScreen extends InputAdapter implements Screen  {
     private MouseJointDef mouseJointDef;
     private MouseJoint mouseJoint;
     private RevoluteJointDef revoluteJointDef;
+    private Touchpad touchpad;
+    private Stage stage;
 
     public GameScreen(final Main game) {
         this.game = game;
@@ -41,7 +45,14 @@ public class GameScreen extends InputAdapter implements Screen  {
 
     @Override
     public void show() {
+
         Gdx.input.setInputProcessor(this);
+
+        touchpad = new Touchpad(20, Utilities.touchpadStyle());
+        touchpad.setBounds(10,10,300, 300);
+        stage = new Stage();
+        stage.addActor(touchpad);
+
         mouseJointDef = new MouseJointDef();
         mouseJointDef.bodyA = model.world.createBody(new BodyDef());
         mouseJointDef.collideConnected = true;
@@ -64,6 +75,8 @@ public class GameScreen extends InputAdapter implements Screen  {
 
     @Override
     public void render(float delta) {
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
         model.logicStep(delta);
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
