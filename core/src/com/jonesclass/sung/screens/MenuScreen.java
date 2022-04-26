@@ -1,20 +1,20 @@
-package com.jonesclass.sung;
+package com.jonesclass.sung.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.jonesclass.sung.Main;
 import com.jonesclass.sung.Utilities;
-
+import com.jonesclass.sung.screens.GameScreen;
 
 
 public class MenuScreen implements Screen {
@@ -36,16 +36,13 @@ public class MenuScreen implements Screen {
         table = new Table();
 
         try {
-            titleLabel = new Label("Linked", Utilities.labelStyle());
-            titleLabel.setFontScale(12f);
+            titleLabel = new Label("Linked", Utilities.labelStyle(12));
 
             startButton = new TextButton("Start", Utilities.buttonStyles());
             scoresButton = new TextButton("High Scores", Utilities.buttonStyles());
             exitButton = new TextButton("Exit", Utilities.buttonStyles());
 
-            startButton = Utilities.buttonSettings(startButton);
-            scoresButton = Utilities.buttonSettings(scoresButton);
-            exitButton = Utilities.buttonSettings(exitButton);
+
 
 
             table.center().top().setFillParent(true);
@@ -62,12 +59,26 @@ public class MenuScreen implements Screen {
             e.printStackTrace();
         }
         table.debug();
-        Gdx.input.setInputProcessor(stage);
+
     }
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(stage);
 
+        startButton.addListener(new ClickListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                game.setScreen(game.getScreen("Game"));
+            }
+        });
+
+        scoresButton.addListener(new ClickListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                game.setScreen(game.getScreen("HighScore"));
+            }
+        });
     }
 
     @Override
@@ -77,10 +88,6 @@ public class MenuScreen implements Screen {
         cam.update();
         stage.act(delta);
         stage.draw();
-
-        if (startButton.isPressed()) {
-            game.setScreen(new GameScreen(game));
-        }
 
         if (exitButton.isPressed()) {
             Gdx.app.exit();
@@ -104,7 +111,7 @@ public class MenuScreen implements Screen {
 
     @Override
     public void hide() {
-
+        Gdx.input.setInputProcessor(null);
     }
 
     @Override

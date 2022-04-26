@@ -1,4 +1,4 @@
-package com.jonesclass.sung;
+package com.jonesclass.sung.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -12,14 +12,16 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.QueryCallback;
-import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
+import com.jonesclass.sung.B2dModel;
+import com.jonesclass.sung.Main;
+import com.jonesclass.sung.Utilities;
 
-import java.awt.event.KeyEvent;
+import java.security.Key;
 
 public class GameScreen extends InputAdapter implements Screen  {
 
@@ -38,7 +40,7 @@ public class GameScreen extends InputAdapter implements Screen  {
 
     public GameScreen(final Main game) {
         this.game = game;
-        cam = new OrthographicCamera(32,24);
+        cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         debugRenderer = new Box2DDebugRenderer(true, true, true, true, true, true);
         model = new B2dModel();
     }
@@ -47,11 +49,12 @@ public class GameScreen extends InputAdapter implements Screen  {
     public void show() {
 
         Gdx.input.setInputProcessor(this);
+        Gdx.input.setCatchKey(Input.Keys.BACK, true);
 
-        touchpad = new Touchpad(20, Utilities.touchpadStyle());
-        touchpad.setBounds(10,10,300, 300);
+//        touchpad = new Touchpad(20, Utilities.touchpadStyle());
+//        touchpad.setBounds(10,10,300, 300);
         stage = new Stage();
-        stage.addActor(touchpad);
+//        stage.addActor(touchpad);
 
         mouseJointDef = new MouseJointDef();
         mouseJointDef.bodyA = model.world.createBody(new BodyDef());
@@ -82,8 +85,9 @@ public class GameScreen extends InputAdapter implements Screen  {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         debugRenderer.render(model.world, cam.combined);
 
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
-            game.setScreen(new MenuScreen(game));
+            game.setScreen(game.getScreen("Menu"));
         }
 
     }

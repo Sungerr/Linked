@@ -52,7 +52,7 @@ public class B2dModel {
         bodyDef.position.set(0,-10);
         Body bodys = world.createBody(bodyDef);
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(50,1);
+        shape.setAsBox(500,10);
         bodys.createFixture(shape, 0.0f);
         shape.dispose();
 

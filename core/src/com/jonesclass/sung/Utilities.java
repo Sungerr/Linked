@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -18,6 +20,8 @@ public class Utilities {
     private static Touchpad.TouchpadStyle touchpadStyle;
     private static Skin skin;
     private static TextureAtlas textureAtlasTest;
+    private static FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Lato-Regular.ttf"));
+    private static FreeTypeFontParameter parameter = new FreeTypeFontParameter();
 
 
     public static TextButton buttonSettings(TextButton button) {
@@ -28,7 +32,8 @@ public class Utilities {
     }
 
     public static TextButtonStyle buttonStyles() {
-        BitmapFont font = new BitmapFont();
+        parameter.size = 85;
+        BitmapFont font = generator.generateFont(parameter);
         skin = new Skin(Gdx.files.internal("uiskin.json"));
         textureAtlasTest = new TextureAtlas("uiskin.atlas");
         skin.addRegions(textureAtlasTest);
@@ -43,9 +48,11 @@ public class Utilities {
         return textButtonStyle;
     }
 
-    public static Label.LabelStyle labelStyle() {
+    public static Label.LabelStyle labelStyle(int fontSize) {
 
-        BitmapFont font = new BitmapFont();
+        parameter.size = fontSize * 10;
+
+        BitmapFont font = generator.generateFont(parameter);
 
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         labelStyle.font = font;
