@@ -43,8 +43,6 @@ public class MenuScreen implements Screen {
             exitButton = new TextButton("Exit", Utilities.buttonStyles());
 
 
-
-
             table.center().top().setFillParent(true);
             table.add(titleLabel).padBottom(110).padTop(20);
             table.row();

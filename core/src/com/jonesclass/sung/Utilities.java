@@ -18,8 +18,8 @@ public class Utilities {
     private static TextButtonStyle textButtonStyle;
     private static TextButton textButton;
     private static Touchpad.TouchpadStyle touchpadStyle;
-    private static Skin skin;
-    private static TextureAtlas textureAtlasTest;
+    private static Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+    private static TextureAtlas textureAtlasTest = new TextureAtlas("uiskin.atlas");
     private static FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Lato-Regular.ttf"));
     private static FreeTypeFontParameter parameter = new FreeTypeFontParameter();
 
@@ -34,14 +34,12 @@ public class Utilities {
     public static TextButtonStyle buttonStyles() {
         parameter.size = 85;
         BitmapFont font = generator.generateFont(parameter);
-        skin = new Skin(Gdx.files.internal("uiskin.json"));
-        textureAtlasTest = new TextureAtlas("uiskin.atlas");
-        skin.addRegions(textureAtlasTest);
+
         textButtonStyle = new TextButtonStyle();
         textButtonStyle.font = font;
         textButtonStyle.fontColor = Color.WHITE;
         textButtonStyle.overFontColor = Color.YELLOW;
-        textButtonStyle.up = skin.getDrawable("default-rect");
+        textButtonStyle.up = skin.getDrawable("default-rect-down");
         textButtonStyle.over = skin.getDrawable("default-rect-down");
         textButtonStyle.pressedOffsetX = 1;
         textButtonStyle.pressedOffsetY = -1;
@@ -62,9 +60,19 @@ public class Utilities {
     }
 
     public static Touchpad.TouchpadStyle touchpadStyle() {
+        skin.addRegions(textureAtlasTest);
         touchpadStyle = new Touchpad.TouchpadStyle();
-        touchpadStyle.background = skin.getDrawable("default-rect-pad");
-        touchpadStyle.knob = skin.getDrawable("default-round");
+        touchpadStyle.background = skin.getDrawable("default-pane");
+        touchpadStyle.knob = skin.getDrawable("default-round-large");
+        touchpadStyle.background.setMinHeight(200);
+        touchpadStyle.knob.setMinHeight(60);
+        touchpadStyle.background.setMinWidth(200);
+        touchpadStyle.knob.setMinWidth(60);
+
         return touchpadStyle;
+    }
+
+    public static Skin skin() {
+        return skin;
     }
 }

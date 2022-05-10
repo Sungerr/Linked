@@ -24,7 +24,6 @@ public class B2dModel {
     public B2dModel () {
         world = new World(new Vector2(0,0), true);
         world.setContactListener(new B2dContactListener(this));
-        createFloor();
 
 
         // get our body factor and store it in bodyFactory

@@ -3,6 +3,7 @@ package com.jonesclass.sung.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -15,15 +16,22 @@ import com.badlogic.gdx.physics.box2d.QueryCallback;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.jonesclass.sung.B2dModel;
 import com.jonesclass.sung.Main;
 import com.jonesclass.sung.Utilities;
 
 import java.security.Key;
 
-public class GameScreen extends InputAdapter implements Screen  {
+import sun.nio.ch.Util;
+
+public class GameScreen  implements Screen  {
 
 
     //TODO: touchpad, screen loop, enemies, obstacles, highscore, menu, weapon speed slider
@@ -35,26 +43,53 @@ public class GameScreen extends InputAdapter implements Screen  {
     private MouseJointDef mouseJointDef;
     private MouseJoint mouseJoint;
     private RevoluteJointDef revoluteJointDef;
+    private InputMultiplexer inputMultiplexer = new InputMultiplexer();
     private Touchpad touchpad;
     private Stage stage;
+    private final int WIDTH, HEIGHT;
 
     public GameScreen(final Main game) {
         this.game = game;
-        cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        WIDTH = Gdx.graphics.getWidth();
+        HEIGHT = Gdx.graphics.getHeight();
+        cam = new OrthographicCamera(WIDTH/32, HEIGHT/32);
+
         debugRenderer = new Box2DDebugRenderer(true, true, true, true, true, true);
         model = new B2dModel();
+
+
     }
 
     @Override
     public void show() {
 
-        Gdx.input.setInputProcessor(this);
+        Table table = new Table();
+        stage = new Stage();
+
         Gdx.input.setCatchKey(Input.Keys.BACK, true);
 
-//        touchpad = new Touchpad(20, Utilities.touchpadStyle());
-//        touchpad.setBounds(10,10,300, 300);
-        stage = new Stage();
-//        stage.addActor(touchpad);
+        touchpad = new Touchpad(0, Utilities.touchpadStyle());
+        touchpad.setColor( 255,255,255,0.4f);
+
+        table.setFillParent(true);
+        table.bottom().left();
+        table.add(touchpad).width(200).height(200).pad(70);
+        stage.addActor(table);
+
+        touchpad.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+                float deltaX = ((Touchpad) actor).getKnobPercentX();
+                float deltaY = ((Touchpad) actor).getKnobPercentY();
+
+                model.circle1.setLinearVelocity(15 * deltaX, 15 * deltaY);
+
+                System.out.println(deltaX + ", " + deltaY);
+            }
+        });
+
+        inputMultiplexer.addProcessor(stage);
 
         mouseJointDef = new MouseJointDef();
         mouseJointDef.bodyA = model.world.createBody(new BodyDef());
@@ -74,20 +109,40 @@ public class GameScreen extends InputAdapter implements Screen  {
 
         //change this to edit speed
         mouseJointDef.maxForce = 1000;
+
+        table.debug();
+
+        Gdx.input.setInputProcessor(inputMultiplexer);
+
     }
 
     @Override
     public void render(float delta) {
-        stage.act(Gdx.graphics.getDeltaTime());
-        stage.draw();
-        model.logicStep(delta);
+
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         debugRenderer.render(model.world, cam.combined);
-
+        stage.act(delta);
+        stage.draw();
+        model.logicStep(delta);
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
             game.setScreen(game.getScreen("Menu"));
+        }
+
+
+        System.out.println(model.circle1.getPosition().x + " " + model.circle1.getPosition().y);
+        if (model.circle1.getPosition().x < -30) {
+            model.circle1.setTransform(30, model.circle1.getPosition().y, model.circle1.getAngle());
+        }
+        if (model.circle1.getPosition().y < -15) {
+            model.circle1.setTransform(model.circle1.getPosition().x, 15, model.circle1.getAngle());
+        }
+        if (model.circle1.getPosition().x > 30) {
+            model.circle1.setTransform(-30, model.circle1.getPosition().y, model.circle1.getAngle());
+        }
+        if (model.circle1.getPosition().y > 15) {
+            model.circle1.setTransform(model.circle1.getPosition().x, -15, model.circle1.getAngle());
         }
 
     }
@@ -116,61 +171,5 @@ public class GameScreen extends InputAdapter implements Screen  {
     public void dispose() {
 
     }
-
-
-    private Vector3 tmp = new Vector3();
-    private Vector2 tmp2 = new Vector2();
-
-    private QueryCallback queryCallback = new QueryCallback() {
-
-        @Override
-        public boolean reportFixture(Fixture fixture) {
-            if (!fixture.testPoint(tmp.x, tmp.y)) {
-                return false;
-            } else if (!fixture.testPoint(model.circle1.getPosition())) {
-                return false;
-            }
-            mouseJointDef.bodyB = fixture.getBody();
-            mouseJointDef.target.set(tmp.x, tmp.y);
-            mouseJoint = (MouseJoint) model.world.createJoint(mouseJointDef);
-
-            return false;
-        }
-    };
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        cam.unproject(tmp.set(screenX, screenY, 0));
-        model.world.QueryAABB(queryCallback, tmp.x, tmp.y, tmp.x, tmp.y);
-        return true;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-
-        if (mouseJoint == null)
-            return false;
-
-
-        model.world.destroyJoint(mouseJoint);
-        mouseJoint = null;
-
-
-        return true;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        if (mouseJoint == null)
-            return false;
-
-        cam.unproject(tmp.set(screenX, screenY, 0));
-        mouseJoint.setTarget(tmp2.set(tmp.x, tmp.y));
-        mouseJoint.setDampingRatio(10f);
-        mouseJoint.setFrequency(20f);
-
-        return true;
-    }
-
 
 }
