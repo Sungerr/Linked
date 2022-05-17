@@ -26,20 +26,20 @@ public class Asteroid {
         switch (type) {
             case SMALL:
                 vertexTotal = 8;
-                width = 6;
-                height = 6;
+                width = 5;
+                height = 5;
                 speed = (float) (Math.random() * 30) + 70;
                 break;
             case MEDIUM:
                 vertexTotal = 10;
-                width = 10;
-                height = 10;
+                width = 7;
+                height = 7;
                 speed = (float) (Math.random() * 10) + 50;
                 break;
             case LARGE:
                 vertexTotal = 12;
-                width = 20;
-                height = 20;
+                width = 9;
+                height = 9;
                 speed = (float) (Math.random() * 10) + 20;
                 break;
         }

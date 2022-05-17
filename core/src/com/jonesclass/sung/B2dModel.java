@@ -12,21 +12,21 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 
+import java.util.ArrayList;
+
 public class B2dModel {
 
     public World world;
     private MouseJoint mouseJoint = null;
     public Body circle1;
     public Body circle2;
-    public Body connectBody;
+    public Body asteroid;
     public BodyFactory bodyFactory;
-
 
     public B2dModel () {
         world = new World(new Vector2(0,0), true);
         world.setContactListener(new B2dContactListener(this));
         bodyFactory = BodyFactory.getInstance(world);
-
 
         //Small
         circle2 = bodyFactory.makeCirclePolyBody(2, 1, 2, BodyFactory.SATELLITE, BodyType.DynamicBody,true);
@@ -34,7 +34,7 @@ public class B2dModel {
         //Big circle
         circle1 = bodyFactory.makeCirclePolyBody(5, 1, 5, BodyFactory.PLANET, BodyType.DynamicBody,false);
 
-        createAsteroid(new Asteroid(3,3, Asteroid.MEDIUM));
+        asteroid = bodyFactory.createAsteroid(new Asteroid(3,3, Asteroid.SMALL));
 
     }
 
@@ -74,13 +74,6 @@ public class B2dModel {
 
         shape.dispose();
         bodyk.setLinearVelocity(0, 0.75f);
-    }
-
-    private void createAsteroid(Asteroid asteroid) {
-        bodyFactory.makePolygonShapeBody(asteroid.getPoints(), asteroid.getX(),
-                asteroid.getY(), BodyFactory.ASTEROID, BodyType.KinematicBody);
-
-
     }
 
 }

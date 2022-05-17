@@ -10,9 +10,12 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
+import java.util.ArrayList;
+
 public class BodyFactory {
     private static BodyFactory thisInstance;
     private World world;
+    private static ArrayList<Body> bodies = new ArrayList<>();
 
     public static final int PLANET = 0;
     public static final int SATELLITE = 1;
@@ -75,6 +78,7 @@ public class BodyFactory {
         boxBodyDef.position.y = y;
         Body boxBody = world.createBody(boxBodyDef);
 
+
         PolygonShape polygon = new PolygonShape();
         polygon.set(vertices);
         boxBody.createFixture(makeFixture(material, polygon));
@@ -83,5 +87,11 @@ public class BodyFactory {
         return boxBody;
     }
 
+
+    public Body createAsteroid(Asteroid asteroid) {
+       return makePolygonShapeBody(asteroid.getPoints(), asteroid.getX(),asteroid.getY(), BodyFactory.ASTEROID, BodyType.DynamicBody);
+    }
+
+    public static ArrayList<Body> getGameBodies() { return bodies; }
 
 }

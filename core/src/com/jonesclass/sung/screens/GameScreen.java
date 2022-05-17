@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -24,6 +25,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.jonesclass.sung.B2dModel;
+import com.jonesclass.sung.BodyFactory;
 import com.jonesclass.sung.Main;
 import com.jonesclass.sung.Utilities;
 
@@ -34,7 +36,7 @@ import sun.nio.ch.Util;
 public class GameScreen  implements Screen  {
 
 
-    //TODO: touchpad, screen loop, enemies, obstacles, highscore, menu, weapon speed slider
+    //TODO: enemies, obstacles, highscore, weapon speed slider
 
     final Main game;
     B2dModel model;
@@ -69,7 +71,7 @@ public class GameScreen  implements Screen  {
         Gdx.input.setCatchKey(Input.Keys.BACK, true);
 
         touchpad = new Touchpad(0, Utilities.touchpadStyle());
-        touchpad.setColor( 255,255,255,0.4f);
+        touchpad.setColor( 255,255,255,0.55f);
 
         table.setFillParent(true);
         table.bottom().left();
@@ -130,20 +132,25 @@ public class GameScreen  implements Screen  {
             game.setScreen(game.getScreen("Menu"));
         }
 
+        for (Body b : BodyFactory.getGameBodies()) {
+            System.out.println(b.getPosition().x);
+            if (b.getPosition().x < -30) {
+                b.setTransform(30, b.getPosition().y, b.getAngle());
+            }
+            if (b.getPosition().y < -15) {
+                b.setTransform(b.getPosition().x, 15, b.getAngle());
+            }
+            if (b.getPosition().x > 30) {
+                b.setTransform(-30, b.getPosition().y, b.getAngle());
+            }
+            if (b.getPosition().y > 15) {
+                b.setTransform(b.getPosition().x, -15, b.getAngle());
+            }
+        }
+
 
         System.out.println(model.circle1.getPosition().x + " " + model.circle1.getPosition().y);
-        if (model.circle1.getPosition().x < -30) {
-            model.circle1.setTransform(30, model.circle1.getPosition().y, model.circle1.getAngle());
-        }
-        if (model.circle1.getPosition().y < -15) {
-            model.circle1.setTransform(model.circle1.getPosition().x, 15, model.circle1.getAngle());
-        }
-        if (model.circle1.getPosition().x > 30) {
-            model.circle1.setTransform(-30, model.circle1.getPosition().y, model.circle1.getAngle());
-        }
-        if (model.circle1.getPosition().y > 15) {
-            model.circle1.setTransform(model.circle1.getPosition().x, -15, model.circle1.getAngle());
-        }
+
 
     }
 
