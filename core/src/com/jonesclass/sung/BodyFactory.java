@@ -1,5 +1,6 @@
 package com.jonesclass.sung;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -15,6 +16,7 @@ public class BodyFactory {
 
     public static final int PLANET = 0;
     public static final int SATELLITE = 1;
+    public static final int ASTEROID = 2;
 
     private BodyFactory(World world){
         this.world = world;
@@ -52,19 +54,32 @@ public class BodyFactory {
     }
 
     public Body makeCirclePolyBody(float posx, float posy, float radius, int material, BodyType bodyType, boolean fixedRotation) {
-        // create a definition
         BodyDef boxBodyDef = new BodyDef();
         boxBodyDef.type = bodyType;
         boxBodyDef.position.x = posx;
         boxBodyDef.position.y = posy;
         boxBodyDef.fixedRotation = fixedRotation;
 
-        //create the body to attach said definition
         Body boxBody = world.createBody(boxBodyDef);
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(radius /2);
         boxBody.createFixture(makeFixture(material,circleShape));
         circleShape.dispose();
+        return boxBody;
+    }
+
+    public Body makePolygonShapeBody(Vector2[] vertices, float x, float y, int material, BodyType bodyType) {
+        BodyDef boxBodyDef = new BodyDef();
+        boxBodyDef.type = bodyType;
+        boxBodyDef.position.x = x;
+        boxBodyDef.position.y = y;
+        Body boxBody = world.createBody(boxBodyDef);
+
+        PolygonShape polygon = new PolygonShape();
+        polygon.set(vertices);
+        boxBody.createFixture(makeFixture(material, polygon));
+        polygon.dispose();
+
         return boxBody;
     }
 
