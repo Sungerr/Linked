@@ -1,5 +1,6 @@
 package com.jonesclass.sung;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -14,8 +15,9 @@ import java.util.ArrayList;
 
 public class BodyFactory {
     private static BodyFactory thisInstance;
-    private World world;
+    private static World world;
     private static ArrayList<Body> bodies = new ArrayList<>();
+
 
     public static final int PLANET = 0;
     public static final int SATELLITE = 1;
@@ -68,30 +70,32 @@ public class BodyFactory {
         circleShape.setRadius(radius /2);
         boxBody.createFixture(makeFixture(material,circleShape));
         circleShape.dispose();
+        if (material == PLANET) bodies.add(boxBody);
         return boxBody;
     }
 
-    public Body makePolygonShapeBody(Vector2[] vertices, float x, float y, int material, BodyType bodyType) {
+    public static Body makePolygonShapeBody(Vector2[] vertices, float x, float y, int material, BodyType bodyType) {
         BodyDef boxBodyDef = new BodyDef();
         boxBodyDef.type = bodyType;
         boxBodyDef.position.x = x;
         boxBodyDef.position.y = y;
         Body boxBody = world.createBody(boxBodyDef);
 
-
         PolygonShape polygon = new PolygonShape();
         polygon.set(vertices);
         boxBody.createFixture(makeFixture(material, polygon));
         polygon.dispose();
-
+        bodies.add(boxBody);
         return boxBody;
     }
 
 
-    public Body createAsteroid(Asteroid asteroid) {
+    public static Body createAsteroid(Asteroid asteroid) {
        return makePolygonShapeBody(asteroid.getPoints(), asteroid.getX(),asteroid.getY(), BodyFactory.ASTEROID, BodyType.DynamicBody);
     }
 
     public static ArrayList<Body> getGameBodies() { return bodies; }
+
+
 
 }

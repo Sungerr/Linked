@@ -52,14 +52,12 @@ public class GameScreen  implements Screen  {
 
     public GameScreen(final Main game) {
         this.game = game;
-        WIDTH = Gdx.graphics.getWidth();
-        HEIGHT = Gdx.graphics.getHeight();
-        cam = new OrthographicCamera(WIDTH/32, HEIGHT/32);
+        WIDTH = Gdx.graphics.getWidth() / 32;
+        HEIGHT = Gdx.graphics.getHeight() / 32;
+        cam = new OrthographicCamera(WIDTH, HEIGHT);
 
         debugRenderer = new Box2DDebugRenderer(true, true, true, true, true, true);
         model = new B2dModel();
-
-
     }
 
     @Override
@@ -87,15 +85,11 @@ public class GameScreen  implements Screen  {
 
                 model.circle1.setLinearVelocity(15 * deltaX, 15 * deltaY);
 
-                System.out.println(deltaX + ", " + deltaY);
+
             }
         });
 
         inputMultiplexer.addProcessor(stage);
-
-        mouseJointDef = new MouseJointDef();
-        mouseJointDef.bodyA = model.world.createBody(new BodyDef());
-        mouseJointDef.collideConnected = true;
 
         revoluteJointDef = new RevoluteJointDef();
         revoluteJointDef.bodyA = model.circle1;
@@ -103,16 +97,13 @@ public class GameScreen  implements Screen  {
         revoluteJointDef.localAnchorA.set(new Vector2(5, 0));
         revoluteJointDef.localAnchorB.set(new Vector2(0, 0));
         revoluteJointDef.enableMotor = true;
-        revoluteJointDef.motorSpeed = 50f;
-        revoluteJointDef.maxMotorTorque = 50;
+        revoluteJointDef.motorSpeed = 100f;
+        revoluteJointDef.maxMotorTorque = 100;
         revoluteJointDef.referenceAngle = 0;
-
         model.world.createJoint(revoluteJointDef);
-
-        //change this to edit speed
-        mouseJointDef.maxForce = 1000;
-
         table.debug();
+
+        model.spawnAsteroids();
 
         Gdx.input.setInputProcessor(inputMultiplexer);
 
@@ -133,24 +124,14 @@ public class GameScreen  implements Screen  {
         }
 
         for (Body b : BodyFactory.getGameBodies()) {
-            System.out.println(b.getPosition().x);
-            if (b.getPosition().x < -30) {
-                b.setTransform(30, b.getPosition().y, b.getAngle());
-            }
-            if (b.getPosition().y < -15) {
-                b.setTransform(b.getPosition().x, 15, b.getAngle());
-            }
-            if (b.getPosition().x > 30) {
-                b.setTransform(-30, b.getPosition().y, b.getAngle());
-            }
-            if (b.getPosition().y > 15) {
-                b.setTransform(b.getPosition().x, -15, b.getAngle());
-            }
+            if (b.getPosition().x > WIDTH/2) { b.setTransform((WIDTH/2 * -1),b.getPosition().y,b.getAngle());}
+            if (b.getPosition().x < (WIDTH/2 * -1)) { b.setTransform((WIDTH/2),b.getPosition().y,b.getAngle());}
+
+            if (b.getPosition().y > HEIGHT/2) { b.setTransform(b.getPosition().x,(HEIGHT/2 * -1),b.getAngle());}
+            if (b.getPosition().y < (HEIGHT/2 * -1)) { b.setTransform(b.getPosition().y,HEIGHT/2,b.getAngle());}
         }
 
-
         System.out.println(model.circle1.getPosition().x + " " + model.circle1.getPosition().y);
-
 
     }
 

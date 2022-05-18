@@ -1,5 +1,6 @@
 package com.jonesclass.sung;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -20,8 +21,9 @@ public class B2dModel {
     private MouseJoint mouseJoint = null;
     public Body circle1;
     public Body circle2;
-    public Body asteroid;
     public BodyFactory bodyFactory;
+    public static ArrayList<Body> asteroidArray = new ArrayList<>();
+
 
     public B2dModel () {
         world = new World(new Vector2(0,0), true);
@@ -33,8 +35,6 @@ public class B2dModel {
 
         //Big circle
         circle1 = bodyFactory.makeCirclePolyBody(5, 1, 5, BodyFactory.PLANET, BodyType.DynamicBody,false);
-
-        asteroid = bodyFactory.createAsteroid(new Asteroid(3,3, Asteroid.SMALL));
 
     }
 
@@ -76,4 +76,25 @@ public class B2dModel {
         bodyk.setLinearVelocity(0, 0.75f);
     }
 
+    public void spawnAsteroids() {
+        int asteroidLimit = 5;
+        float dist = 0;
+        float x = 0;
+        float y = 0;
+
+        for (int i = 0; asteroidArray.size() < asteroidLimit; i++) {
+            do {
+                x = (float) ((Math.random() * Gdx.graphics.getWidth() / 40) - (Gdx.graphics.getWidth() / 64));
+                y = (float) ((Math.random() * Gdx.graphics.getHeight() / 40) - (Gdx.graphics.getHeight() / 64));
+
+                System.out.println(x + " " + y);
+                float dx = circle1.getPosition().x;
+                float dy = circle1.getPosition().y;
+                dist = (float) (Math.sqrt(dx * dx + dy * dy));
+
+            } while (dist < 1);
+
+            asteroidArray.add(BodyFactory.createAsteroid(new Asteroid(x,y, (int) (Math.random() * 3))));
+        }
+    }
 }
