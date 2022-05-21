@@ -36,7 +36,7 @@ import sun.nio.ch.Util;
 public class GameScreen  implements Screen  {
 
 
-    //TODO: enemies, obstacles, highscore, weapon speed slider
+    //TODO: enemies, powerups, highscore
 
     final Main game;
     B2dModel model;

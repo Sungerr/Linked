@@ -84,8 +84,8 @@ public class B2dModel {
 
         for (int i = 0; asteroidArray.size() < asteroidLimit; i++) {
             do {
-                x = (float) ((Math.random() * Gdx.graphics.getWidth() / 40) - (Gdx.graphics.getWidth() / 64));
-                y = (float) ((Math.random() * Gdx.graphics.getHeight() / 40) - (Gdx.graphics.getHeight() / 64));
+                x = (float) ((Math.random() * Gdx.graphics.getWidth() / 45) - (Gdx.graphics.getWidth() / 65));
+                y = (float) ((Math.random() * Gdx.graphics.getHeight() / 45) - (Gdx.graphics.getHeight() / 65));
 
                 System.out.println(x + " " + y);
                 float dx = circle1.getPosition().x;
@@ -93,8 +93,10 @@ public class B2dModel {
                 dist = (float) (Math.sqrt(dx * dx + dy * dy));
 
             } while (dist < 1);
+            Asteroid newAsteroid = new Asteroid(x,y, (int) (Math.random() * 3));
+            Body newAsteroidBody = BodyFactory.createAsteroid(newAsteroid);
 
-            asteroidArray.add(BodyFactory.createAsteroid(new Asteroid(x,y, (int) (Math.random() * 3))));
+            asteroidArray.add(newAsteroidBody);
         }
     }
 }
