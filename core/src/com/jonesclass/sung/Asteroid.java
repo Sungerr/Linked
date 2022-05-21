@@ -65,8 +65,14 @@ public class Asteroid {
         float angle = 0;
         for (int i = 0; i < vertexTotal; i++) {
             shape[i] = new Vector2();
-            shape[i].x = (float) (x + Math.cos(angle + radians) * dists[i]);
-            shape[i].y = (float) (x + Math.sin(angle + radians) * dists[i]);
+
+            //Makes square shape for some reason
+            shape[i].x = x;
+            shape[i].y = y;
+
+            //TODO: Fix asteroid shape
+//            shape[i].x = (float) (x + Math.cos(angle + radians) * dists[i]);
+//            shape[i].y = (float) (x + Math.sin(angle + radians) * dists[i]);
             angle += (float) ((2 * Math.PI) / vertexTotal);
         }
     }

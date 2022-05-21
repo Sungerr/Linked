@@ -92,6 +92,7 @@ public class BodyFactory {
 
     public static Body createAsteroid(Asteroid asteroid) {
        return makePolygonShapeBody(asteroid.getPoints(), asteroid.getX(),asteroid.getY(), BodyFactory.ASTEROID, BodyType.DynamicBody);
+
     }
 
     public static ArrayList<Body> getGameBodies() { return bodies; }

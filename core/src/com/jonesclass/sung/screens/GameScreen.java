@@ -56,6 +56,7 @@ public class GameScreen  implements Screen  {
         HEIGHT = Gdx.graphics.getHeight() / 32;
         cam = new OrthographicCamera(WIDTH, HEIGHT);
 
+
         debugRenderer = new Box2DDebugRenderer(true, true, true, true, true, true);
         model = new B2dModel();
     }
