@@ -28,6 +28,7 @@ import com.jonesclass.sung.B2dModel;
 import com.jonesclass.sung.BodyFactory;
 import com.jonesclass.sung.Main;
 import com.jonesclass.sung.ObjectStats;
+import com.jonesclass.sung.ScoreManager;
 import com.jonesclass.sung.Utilities;
 
 import java.security.Key;
@@ -50,6 +51,7 @@ public class GameScreen  implements Screen  {
     private Touchpad touchpad;
     private Stage stage;
     private final int WIDTH, HEIGHT;
+    private float time = 0;
 
     public GameScreen(final Main game) {
         this.game = game;
@@ -113,7 +115,7 @@ public class GameScreen  implements Screen  {
 
     @Override
     public void render(float delta) {
-
+        time += delta;
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         debugRenderer.render(model.world, cam.combined);
@@ -130,8 +132,10 @@ public class GameScreen  implements Screen  {
 
         if (planetData.getHealth() <= 0 ) {
             game.setScreen(game.getScreen("GameOver"));
-            dispose();
             planetData.setHealth(3);
+            ScoreManager.setScore(time);
+            dispose();
+
         }
 
         for (Body b : BodyFactory.getGameBodies()) {
@@ -169,6 +173,7 @@ public class GameScreen  implements Screen  {
     @Override
     public void dispose() {
         stage.dispose();
+        time = 0;
     }
 
 }

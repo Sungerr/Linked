@@ -6,7 +6,6 @@ public class ObjectStats {
     private int damage = -1;
     private String type = "";
 
-
     public ObjectStats(String type) {
         this.type = type;
 

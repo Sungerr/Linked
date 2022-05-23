@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jonesclass.sung.Main;
+import com.jonesclass.sung.ScoreManager;
 import com.jonesclass.sung.SqliteManager;
 import com.jonesclass.sung.Utilities;
 
@@ -80,6 +81,7 @@ public class GameOverScreen extends InputAdapter implements Screen {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 game.setScreen(game.getScreen("Menu"));
+                ScoreManager.setScore(0);
             }
         });
 
@@ -87,13 +89,14 @@ public class GameOverScreen extends InputAdapter implements Screen {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 game.setScreen(game.getScreen("HighScore"));
+                ScoreManager.setScore(0);
             }
         });
 
         submitButton.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //Unfortunately unable to get score done in time :(
+                System.out.println(ScoreManager.getScore());
                 sql.insertScore(textField.getText(), 0, dateString);
             }
         });

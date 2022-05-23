@@ -17,7 +17,6 @@ public class SqliteManager {
     private static final String URL = "jdbc:sqlite:LeaderBoard.db";
     private static Connection conn = null;
 
-
     public SqliteManager() {
         connect();
         createTable();
