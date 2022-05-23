@@ -37,9 +37,6 @@ import sun.nio.ch.Util;
 
 public class GameScreen  implements Screen  {
 
-
-    //TODO: enemies, powerups, highscore
-
     final Main game;
     B2dModel model;
     OrthographicCamera cam;
@@ -66,7 +63,7 @@ public class GameScreen  implements Screen  {
 
     @Override
     public void show() {
-
+        game.getAudioManager().playGame();
         Table table = new Table();
         stage = new Stage();
 
@@ -105,7 +102,7 @@ public class GameScreen  implements Screen  {
         revoluteJointDef.maxMotorTorque = 100;
         revoluteJointDef.referenceAngle = 0;
         model.world.createJoint(revoluteJointDef);
-        table.debug();
+//        table.debug();
 
         model.spawnAsteroids();
 
@@ -125,12 +122,14 @@ public class GameScreen  implements Screen  {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
             game.setScreen(game.getScreen("Menu"));
+            game.getAudioManager().stopAll();
             dispose();
         }
 
         ObjectStats planetData = (ObjectStats) model.circle1.getUserData();
 
         if (planetData.getHealth() <= 0 ) {
+            game.getAudioManager().stopAll();
             game.setScreen(game.getScreen("GameOver"));
             planetData.setHealth(3);
             ScoreManager.setScore(time);

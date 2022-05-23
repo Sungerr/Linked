@@ -11,7 +11,13 @@ import java.sql.Statement;
 //never worked. It may be incompatible with using Libgdx on android or
 //perhaps since the project is generated with Libgdx many of the native
 //gradle dependencies are missing. This is the first time I have been
-//unable to get xerial-sqlite to work
+//unable to get xerial-sqlite to work, but I have put a temporary solution
+//to show the most recent submitted score using the ScoreManager class.
+
+//The error produced was
+// W/System.err: java.sql.SQLException: opening db: 'LeaderBoard.db': Read-only file system
+//I think this means that I am unable to access the database for some reason
+
 public class SqliteManager {
 
     private static final String URL = "jdbc:sqlite:LeaderBoard.db";

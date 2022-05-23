@@ -43,7 +43,7 @@ public class GameOverScreen extends InputAdapter implements Screen {
 
         stage = new Stage();
         table = new Table();
-        table.debug();
+//        table.debug();
 
         try {
             titleLabel = new Label("Enter Your Name", Utilities.labelStyle(10));
@@ -70,7 +70,7 @@ public class GameOverScreen extends InputAdapter implements Screen {
 
     @Override
     public void show() {
-
+        game.getAudioManager().playMenu();
         Gdx.input.setInputProcessor(stage);
         Gdx.input.setCatchKey(Input.Keys.BACK, true);
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -80,23 +80,26 @@ public class GameOverScreen extends InputAdapter implements Screen {
         menuButton.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                game.getAudioManager().playButton();
                 game.setScreen(game.getScreen("Menu"));
-                ScoreManager.setScore(0);
             }
         });
 
         scoresButton.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                game.getAudioManager().playButton();
                 game.setScreen(game.getScreen("HighScore"));
-                ScoreManager.setScore(0);
             }
         });
 
         submitButton.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println(ScoreManager.getScore());
+               game.getAudioManager().playButton();
+                ScoreManager.setName(textField.getText());
+                ScoreManager.setDate(dateString);
+                textField.setText("");
                 sql.insertScore(textField.getText(), 0, dateString);
             }
         });
@@ -112,6 +115,7 @@ public class GameOverScreen extends InputAdapter implements Screen {
 
         if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
             game.setScreen(game.getScreen("Menu"));
+            game.getAudioManager().stopAll();
         }
 
 

@@ -66,7 +66,7 @@ public class Asteroid {
             shape[i].x = x;
             shape[i].y = y;
 
-            //TODO: Fix asteroid shape
+            //Did not have enough time to fix random asteroid shapes
 //            shape[i].x = (float) (x + Math.cos(angle + radians) * dists[i]);
 //            shape[i].y = (float) (x + Math.sin(angle + radians) * dists[i]);
             angle += (float) ((2 * Math.PI) / vertexTotal);

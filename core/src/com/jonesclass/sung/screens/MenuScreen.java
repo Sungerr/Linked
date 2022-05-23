@@ -13,11 +13,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jonesclass.sung.Main;
+import com.jonesclass.sung.ScoreManager;
 import com.jonesclass.sung.Utilities;
 import com.jonesclass.sung.screens.GameScreen;
 
 
 public class MenuScreen implements Screen {
+
 
     private Main game;
     private OrthographicCamera cam;
@@ -44,7 +46,7 @@ public class MenuScreen implements Screen {
 
 
             table.center().top().setFillParent(true);
-            table.add(titleLabel).padBottom(110).padTop(20);
+            table.add(titleLabel).padBottom(110).padTop(80);
             table.row();
             table.add(startButton).padBottom(90).width(550).height(130);
             table.row();
@@ -56,17 +58,20 @@ public class MenuScreen implements Screen {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        table.debug();
+//        table.debug();
 
     }
 
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
-
+        game.getAudioManager().playMenu();
         startButton.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                game.getAudioManager().playButton();
+                ScoreManager.setScore(0);
+                game.getAudioManager().stopAll();
                 game.setScreen(game.getScreen("Game"));
             }
         });
@@ -74,6 +79,7 @@ public class MenuScreen implements Screen {
         scoresButton.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                game.getAudioManager().playButton();
                 game.setScreen(game.getScreen("HighScore"));
             }
         });

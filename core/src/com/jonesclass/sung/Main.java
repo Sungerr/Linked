@@ -9,9 +9,11 @@ import com.jonesclass.sung.screens.MenuScreen;
 
 public class Main extends Game {
 	private Screen[] screens = new Screen[4];
+	private AudioManager am;
 
 	@Override
 	public void create () {
+		am = new AudioManager();
 		screens[0] = new MenuScreen(this);
 		screens[1] = new HighScoreScreen(this);
 		screens[2] = new GameScreen(this);
@@ -49,5 +51,9 @@ public class Main extends Game {
 				break;
 		}
 		return screen;
+	}
+
+	public AudioManager getAudioManager() {
+		return am;
 	}
 }

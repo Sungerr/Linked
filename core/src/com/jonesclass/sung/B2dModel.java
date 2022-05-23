@@ -44,18 +44,6 @@ public class B2dModel {
         circle1 = bodyFactory.makeCirclePolyBody(5, 1, 5, BodyFactory.PLANET, BodyType.DynamicBody,false);
     }
 
-//    private void createFloor() {
-//        BodyDef bodyDef = new BodyDef();
-//        bodyDef.type = BodyDef.BodyType.StaticBody;
-//        bodyDef.position.set(0,-10);
-//        Body bodys = world.createBody(bodyDef);
-//        PolygonShape shape = new PolygonShape();
-//        shape.setAsBox(500,10);
-//        bodys.createFixture(shape, 0.0f);
-//        shape.dispose();
-//
-//    }
-
     private void createMovingObject(){
 
         BodyDef bodyDef = new BodyDef();
@@ -76,7 +64,7 @@ public class B2dModel {
     }
 
     public void spawnAsteroids() {
-        int asteroidLimit = 10;
+        int asteroidLimit = 20;
         float dist = 0;
         float x = 0;
         float y = 0;
