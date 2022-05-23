@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.utils.Align;
 
@@ -70,6 +71,16 @@ public class Utilities {
         touchpadStyle.knob.setMinWidth(60);
 
         return touchpadStyle;
+    }
+
+    public static TextField.TextFieldStyle textFieldStyle() {
+        TextField.TextFieldStyle style = new TextField.TextFieldStyle();
+        BitmapFont font = generator.generateFont(parameter);
+        style.font = font;
+        style.fontColor = Color.WHITE;
+        style.background = skin.getDrawable("textfield");
+        style.background.setMinWidth(800);
+        return style;
     }
 
     public static Skin skin() {

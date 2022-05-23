@@ -27,6 +27,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.jonesclass.sung.B2dModel;
 import com.jonesclass.sung.BodyFactory;
 import com.jonesclass.sung.Main;
+import com.jonesclass.sung.ObjectStats;
 import com.jonesclass.sung.Utilities;
 
 import java.security.Key;
@@ -122,17 +123,26 @@ public class GameScreen  implements Screen  {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
             game.setScreen(game.getScreen("Menu"));
+            dispose();
+        }
+
+        ObjectStats planetData = (ObjectStats) model.circle1.getUserData();
+
+        if (planetData.getHealth() <= 0 ) {
+            game.setScreen(game.getScreen("GameOver"));
+            dispose();
+            planetData.setHealth(3);
         }
 
         for (Body b : BodyFactory.getGameBodies()) {
+            if (b.getUserData().equals("Satellite")) continue;
+
             if (b.getPosition().x > WIDTH/2) { b.setTransform((WIDTH/2 * -1),b.getPosition().y,b.getAngle());}
             if (b.getPosition().x < (WIDTH/2 * -1)) { b.setTransform((WIDTH/2),b.getPosition().y,b.getAngle());}
 
             if (b.getPosition().y > HEIGHT/2) { b.setTransform(b.getPosition().x,(HEIGHT/2 * -1),b.getAngle());}
             if (b.getPosition().y < (HEIGHT/2 * -1)) { b.setTransform(b.getPosition().y,HEIGHT/2,b.getAngle());}
         }
-
-        System.out.println(model.circle1.getPosition().x + " " + model.circle1.getPosition().y);
 
     }
 
@@ -158,7 +168,7 @@ public class GameScreen  implements Screen  {
 
     @Override
     public void dispose() {
-
+        stage.dispose();
     }
 
 }

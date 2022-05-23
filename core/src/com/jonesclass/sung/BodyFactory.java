@@ -34,7 +34,6 @@ public class BodyFactory {
         return thisInstance;
     }
 
-
     static public FixtureDef makeFixture(int material, Shape shape){
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -70,7 +69,12 @@ public class BodyFactory {
         circleShape.setRadius(radius /2);
         boxBody.createFixture(makeFixture(material,circleShape));
         circleShape.dispose();
-        if (material == PLANET) bodies.add(boxBody);
+        if (material == PLANET) {
+            boxBody.setUserData(new ObjectStats("Planet"));
+        } else if (material == SATELLITE) {
+            boxBody.setUserData(new ObjectStats("Satellite"));
+        }
+        bodies.add(boxBody);
         return boxBody;
     }
 
@@ -80,6 +84,7 @@ public class BodyFactory {
         boxBodyDef.position.x = x;
         boxBodyDef.position.y = y;
         Body boxBody = world.createBody(boxBodyDef);
+        boxBody.setUserData(new ObjectStats("Asteroid"));
 
         PolygonShape polygon = new PolygonShape();
         polygon.set(vertices);
@@ -89,14 +94,11 @@ public class BodyFactory {
         return boxBody;
     }
 
-
     public static Body createAsteroid(Asteroid asteroid) {
        return makePolygonShapeBody(asteroid.getPoints(), asteroid.getX(),asteroid.getY(), BodyFactory.ASTEROID, BodyType.DynamicBody);
 
     }
 
     public static ArrayList<Body> getGameBodies() { return bodies; }
-
-
 
 }

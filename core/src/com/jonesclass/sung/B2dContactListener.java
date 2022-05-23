@@ -24,7 +24,18 @@ public class B2dContactListener implements ContactListener {
         System.out.println("Contact");
         Fixture fa = contact.getFixtureA();
         Fixture fb = contact.getFixtureB();
-        System.out.println(fa.getBody().getType() + " has hit " + fb.getBody().getType());
+
+
+        ObjectStats data1 = (ObjectStats) fa.getBody().getUserData();
+        ObjectStats data2 = (ObjectStats) fb.getBody().getUserData();
+
+        System.out.println(data1.getType() + " " + data2.getType());
+        if (data1.getType().equals("Planet") && data2.getType().equals("Asteroid")) {
+            data1.setHealth(data2.getDamage() * -1);
+        } else if (data2.getType().equals("Planet") && data1.getType().equals("Asteroid")) {
+            data2.setHealth(data1.getDamage() * -1);
+        }
+
     }
 
     @Override

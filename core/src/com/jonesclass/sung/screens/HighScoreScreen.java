@@ -8,6 +8,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.jonesclass.sung.Main;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class HighScoreScreen extends InputAdapter implements Screen {
 
     private Main game;
@@ -22,6 +25,7 @@ public class HighScoreScreen extends InputAdapter implements Screen {
     public void show() {
         Gdx.input.setInputProcessor(this);
         Gdx.input.setCatchKey(Input.Keys.BACK, true);
+
     }
 
     @Override

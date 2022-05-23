@@ -6,12 +6,20 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+//Sorry Mr. Jones but apparently JDBC for SQLite doesnt work on Android
+//I tried to get Room working, but after trying for 4 hours the annotations
+//never worked. It may be incompatible with using Libgdx on android or
+//perhaps since the project is generated with Libgdx many of the native
+//gradle dependencies are missing. This is the first time I have been
+//unable to get xerial-sqlite to work
 public class SqliteManager {
 
     private static final String URL = "jdbc:sqlite:LeaderBoard.db";
     private static Connection conn = null;
 
+
     public SqliteManager() {
+        connect();
         createTable();
     }
 
@@ -35,7 +43,7 @@ public class SqliteManager {
                     + "Score INTEGER, \n"
                     + "Date STRING"
                     + ");";
-            Statement statement = connect().createStatement();
+            Statement statement = conn.createStatement();
             statement.execute(leaderboardSQL);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -55,7 +63,7 @@ public class SqliteManager {
     public static void defaultInfo() {
         String sql = "INSERT INTO Leaderboard(id, Name, Score, Date) Values(1,'Peter',100,'5/20/2022')";
         try {
-            PreparedStatement input = connect().prepareStatement(sql);
+            PreparedStatement input = conn.prepareStatement(sql);
             input.executeUpdate();
             connect().close();
         } catch (SQLException e) {
@@ -66,7 +74,7 @@ public class SqliteManager {
     }
 
     //TODO: Sort by score value
-    public void insertScore(String name, int score, String Date) {
+    public void insertScore(String name, int score, String date) {
         String sql = "UPDATE Leaderboard SET "
                 + "Name = " + name + ","
                 + "Score = " + score + ","
@@ -74,7 +82,7 @@ public class SqliteManager {
                 + "WHERE id = 1";
 
         try {
-            PreparedStatement input = connect().prepareStatement(sql);
+            PreparedStatement input = conn.prepareStatement(sql);
             input.executeUpdate();
             connect().close();
         } catch (SQLException e) {
@@ -87,7 +95,7 @@ public class SqliteManager {
     public boolean clearTable() {
         String sql = "DELETE FROM Leaderboard";
         try {
-            PreparedStatement input = connect().prepareStatement(sql);
+            PreparedStatement input = conn.prepareStatement(sql);
             input.executeUpdate();
             connect().close();
             return true;

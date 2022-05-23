@@ -11,8 +11,8 @@ public class Asteroid {
     private boolean isDestroyed;
 
     private float x, y;
-    private int width, height, type;
-    private double speed, rotationSpeed, radians, dx, dy;
+    private int width, height, type, health;
+    private double  rotationSpeed, radians, dx, dy;
     private Vector2[] shape;
     private float[] dists;
 
@@ -28,27 +28,23 @@ public class Asteroid {
                 vertexTotal = 8;
                 width = 5;
                 height = 5;
-                speed = (float) (Math.random() * 30) + 70;
+                health = 1;
                 break;
             case MEDIUM:
                 vertexTotal = 10;
                 width = 7;
                 height = 7;
-                speed = (float) (Math.random() * 10) + 50;
+                health = 2;
                 break;
             case LARGE:
                 vertexTotal = 12;
                 width = 9;
                 height = 9;
-                speed = (float) (Math.random() * 10) + 20;
+                health = 3;
                 break;
         }
 
-        rotationSpeed = (Math.random() * 2) - 1;
         radians = Math.random() * (2 * Math.PI);
-        dx = Math.cos(radians) * speed;
-        dy =  Math.sin(radians) * speed;
-
         shape = new Vector2[vertexTotal];
         dists = new float[vertexTotal];
 
@@ -81,5 +77,6 @@ public class Asteroid {
     public Vector2[] getPoints() { return shape; }
     public float getX() {return x;}
     public float getY() {return y;}
+    public int getHealth() {return health;}
 
 }
